@@ -66,8 +66,9 @@
         <section class="widget">
             <h3>友情链接</h3>
             <ul class="widget-list flinks">
-                <li><a href="http://www.bytecats.com" target="_blank">字节猫</a></li>
-                <li><a href="http://wp.bytecats.com" target="_blank">wordpress企业模板</a></li>
+                <li><a href="https://www.b1uew01f.net/" target="_blank">B1ueW01f</a></li>
+                <li><a href="http://www.hrwhisper.me/" target="_blank">细语呢喃</a></li>
+                <li><a href="http://shixiong.name/" target="_blank">Daemon</a></li>
             </ul>
         </section>
     <?php else: ?>
