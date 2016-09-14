@@ -254,7 +254,7 @@ class Links_Plugin implements Typecho_Plugin_Interface
     /**
      * 控制输出格式
      */
-	public static function output_str($pattern=NULL, $links_num=0, $sort=NULL)
+	public static function output_str($pattern=NULL, $links_num=0, $sort=NULL, $random = false)
 	{
 		$options = Typecho_Widget::widget('Widget_Options');
 		if (!isset($options->plugins['activated']['Links'])) {
@@ -284,6 +284,9 @@ class Links_Plugin implements Typecho_Plugin_Interface
 			$sql = $sql->limit($links_num);
 		}
 		$links = $db->fetchAll($sql);
+        if ($random) {
+            shuffle($links);
+        }
 		$str = "";
 		foreach ($links as $link) {
 			if ($link['image'] == NULL) {
@@ -299,9 +302,9 @@ class Links_Plugin implements Typecho_Plugin_Interface
 	}
 
 	//输出
-	public static function output($pattern=NULL, $links_num=0, $sort=NULL)
+	public static function output($pattern=NULL, $links_num=0, $sort=NULL, $random = false)
 	{
-		echo Links_Plugin::output_str($pattern, $links_num, $sort);
+		echo Links_Plugin::output_str($pattern, $links_num, $sort, $random);
 	}
 	
     /**
