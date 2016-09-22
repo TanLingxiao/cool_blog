@@ -18,6 +18,12 @@
        
         <p itemprop="keywords" class="tags"><?php _e('标签: '); ?><?php $this->tags(', ', true, 'none'); ?></p>
         <?php $this->related(4)->to($relatedPosts); ?>
+
+        <?php if(class_exists('Reward_Plugin') && isset($this->options->plugins['activated']['Reward'])): ?>
+            <?php Reward_Plugin::show_reward(); ?>
+            <?php Reward_Plugin::show_modal(); ?>
+        <?php endif; ?>
+
         <div class="related">
             <h3>相关文章推荐</h3>
             <ul class="clearfix">
@@ -31,7 +37,7 @@
             <li>下一篇: <?php $this->theNext('%s','没有了'); ?></li>
         </ul>
     </article>
-   
+
     <?php $this->need('comments.php'); ?>
 
 </div><!-- end #main-->
