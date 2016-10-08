@@ -1,3 +1,6 @@
 [submodule "usr/themes/Greenthemes"]
 	path = usr/themes/Greenthemes
 	url = https://github.com/night-lin/blog_themes.git
+[submodule "usr/themes/GreenGrapes"]
+	path = usr/themes/GreenGrapes
+	url = https://github.com/hongweipeng/GreenGrapes.git
