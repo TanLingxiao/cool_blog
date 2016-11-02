@@ -112,7 +112,7 @@ class Reward_Plugin implements Typecho_Plugin_Interface {
         if (!self::is_content()) {
             return;
         }
-        if (Helper::options()->plugin('MenuTree')->jq_import) {
+        if (Helper::options()->plugin('Reward_Plugin')->jq_import) {
             echo '<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>';
         }
         $jsUrl = Helper::options()->pluginUrl . '/Reward/modal.js';
