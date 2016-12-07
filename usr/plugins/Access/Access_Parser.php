@@ -50,6 +50,7 @@ class Access_Parser
         'Fish search',
         'crawler',
         'bingbot',
+        'YisouSpider',
     );
 
     protected $currentBot = null;
@@ -84,7 +85,7 @@ class Access_Parser
         } elseif (preg_match('/Linux/i', $ua, $matches)) {
             $os = 'Linux';
         } else {
-            $os = '未知';
+            $os = $ua;
         }
 
         if ($this->isBot($ua)) {
@@ -122,7 +123,7 @@ class Access_Parser
         } elseif (preg_match('#(Firefox|Phoenix|Firebird|BonEcho|GranParadiso|Minefield|Iceweasel)/([a-zA-Z0-9.]+)#i', $ua, $matches)) {
             $browser = 'Firefox ' . $matches[2];
         } else {
-            $browser = '未知';
+            $browser = $ua;
         }
         return $os . ' / ' . $browser;
     }
