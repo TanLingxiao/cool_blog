@@ -51,6 +51,8 @@ class Access_Parser
         'crawler',
         'bingbot',
         'YisouSpider',
+        'AhrefsBot',
+        'ToutiaoSpider',
     );
 
     protected $currentBot = null;
@@ -76,10 +78,10 @@ class Access_Parser
             $os = 'Windows XP 64 bit';
         } elseif (preg_match('/Android ([0-9.]+)/i', $ua, $matches)) {
             $os = 'Android ' . $matches[1];
-        } elseif (preg_match('/iPhone OS ([_0-9]+)/i', $ua, $matches)) {
+        } elseif (preg_match('/iPhone ([_0-9]+)/i', $ua, $matches)) {
             $os = 'iPhone ' . $matches[1];
-        } elseif (preg_match('/Ubuntu/i', $ua, $matches)) {
-            $os = 'Ubuntu ';
+        } elseif (preg_match('/Ubuntu (_[0-9.]+)/i', $ua, $matches)) {
+            $os = 'Ubuntu ' . $matches[1];
         } elseif (preg_match('/Mac OS X ([0-9_]+)/i', $ua, $matches)) {
             $os = 'Mac OS X ' . $matches[1];
         } elseif (preg_match('/Linux/i', $ua, $matches)) {

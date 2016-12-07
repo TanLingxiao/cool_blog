@@ -136,6 +136,11 @@ class Access_Plugin implements Typecho_Plugin_Interface
                 Typecho_Cookie::set('__typecho_access_referer', $referer);
             }
         }
+        $domain = parse_url($request->getReferer(), PHP_URL_HOST);
+        // 如果是站内跳转则忽略
+        if ( $domain == parse_url($options->siteUrl, PHP_URL_HOST)) {
+            return;
+        }
 
         $rows = array(
             'ua' => $request->getAgent(),
