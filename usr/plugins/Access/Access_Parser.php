@@ -53,6 +53,7 @@ class Access_Parser
         'YisouSpider',
         'AhrefsBot',
         'ToutiaoSpider',
+        '360Spider',
     );
 
     protected $currentBot = null;
