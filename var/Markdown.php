@@ -59,9 +59,9 @@ class Markdown
         return $renderer->render($doc);*/
         static $parse;
         if(empty($parse)) {
-            $parse = new CommonMark_HyperDown();
+            $parse = new CommonMark_Parsedown();
         }
-        return $parse->makeHtml($text);
+        return $parse->text($text);
     }
 }
 
