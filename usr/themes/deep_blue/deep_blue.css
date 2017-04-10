@@ -1,0 +1,26 @@
+#header{background: #363d4d;}
+body{background: #f1f2f7;}
+.row{}
+/*字体及颜色设置*/
+h2 a{color:#25272a;font-family: "Microsoft YaHei";}
+.widget-title{font-family: "Microsoft YaHei";font-size:1.2em;color:#363d4d;}
+.widget-list{font-family: "Microsoft YaHei";font-size:0.9em;color:#25272a;}
+.widget-list a:link,.widget-list a:visited{color:#6f83b6;}
+.widget-list a:hover,.widget-list a:active{color:#3e4a6a;}
+/*文章列表样式*/
+.post-title a:link,.post-title a:visited{color:#d15553;}
+.post-meta{color:#3d4450;}
+.post-meta a:link,.post-meta a:visited{color:#3d4450;}
+.post{font-family: "Microsoft YaHei";padding: 10px; border-radius: 8px;margin-top: 10px;background: #ffffff;border: 1px solid #dadada;}
+.widget{padding:5px 10px;margin-top: 10px;margin-bottom: 0; border-radius: 5px;background: #ffffff;border: 1px solid #dadada;}
+.post-content{border-radius: 5px;background:#eeeeee;padding:0.2em 1em 0.2em 1em;font-family: "Microsoft YaHei";font-size: 0.9em;}
+.post-button{background:#4f5970;color: #fff;text-align: center;width: 100%;
+	font-family: "Microsoft YaHei";border-radius: 5px;margin-top: 10px;padding: 0.3em 0; }
+#main{margin-top: 15px;}
+#logo{color:#ffffff;}
+/*导航样式*/
+#nav-menu a:link,#nav-menu a:visited{color: #ffffff;background:#363d4d; }
+#nav-menu a.current{border-bottom:3px solid #ffffff;}
+#time-circle{min-width:3em;min-height: 3em; display: inline-block;padding:5px;text-align: center; border-radius: 3px;background:url(img/time-circle2.png);
+	-moz-background-size:100% 100%;background-size:100% 100%; position:absolute;margin-left: -2em;margin-top: -1.5em;
+color: #fff;font-size: 1.3em}

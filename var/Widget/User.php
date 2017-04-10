@@ -114,9 +114,9 @@ class Widget_User extends Typecho_Widget
     {
         //插件接口
         $result = $this->pluginHandle()->trigger($loginPluggable)->login($name, $password, $temporarily, $expire);
-        if ($loginPluggable) {
-            return $result;
-        }
+        //if ($loginPluggable) {
+        //    return $result;
+        //}
 
         /** 开始验证用户 **/
         $user = $this->db->fetchRow($this->db->select()

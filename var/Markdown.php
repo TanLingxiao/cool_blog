@@ -39,12 +39,12 @@ class Markdown
     /**
      * convert 
      * 
-     * @param string $text 
+     * @param string $text
      * @return string
      */
     public static function convert($text)
     {
-        static $docParser, $renderer;
+        /*static $docParser, $renderer;
 
         if (empty($docParser)) {
             $docParser = new CommonMark_DocParser();
@@ -56,7 +56,12 @@ class Markdown
         }
 
         $doc = $docParser->parse($text);
-        return $renderer->render($doc);
+        return $renderer->render($doc);*/
+        static $parse;
+        if(empty($parse)) {
+            $parse = new CommonMark_Parsedown();
+        }
+        return $parse->text($text);
     }
 }
 
