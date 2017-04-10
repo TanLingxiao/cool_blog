@@ -171,7 +171,7 @@ class TpCache_Plugin implements Typecho_Plugin_Interface
 
         try {
             $data = self::get(self::$path);
-            if ($data != false && $_SERVER['REQUEST_METHOD'] != "POST") {
+            if ($data != false && !isset($_GET["s"])) {
                 $data = unserialize($data);
                 //如果超时
                 if ($data['c_time'] + self::$plugin_config->expire <= time()) {
