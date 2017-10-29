@@ -170,7 +170,7 @@ class TpCache_Plugin implements Typecho_Plugin_Interface
 
 
         try {
-            $data = self::get(self::$path);
+            $data = false;
             if ($data != false && !isset($_GET["s"])) {
                 $data = unserialize($data);
                 //如果超时
@@ -268,23 +268,23 @@ class TpCache_Plugin implements Typecho_Plugin_Interface
      */
     public static function S()
     {
-        //对登录用户失效
+        /*//对登录用户失效
         if (self::check_login()) return;
 
         //若self::$key不为空，则使用缓存
         if (is_null(self::$key)) return;
 
 
-        $html = ob_get_contents();
+        $html = ob_get_contents();*/
 
-        if (!empty($html)) {
+        /*if (!empty($html)) {
             $data = array();
             $data['c_time'] = time();
             $data['html'] = $html;
             //更新缓存
             if (self::$plugin_config->is_debug) echo "Cache updated!\n";
             self::set(self::$key, serialize($data));
-        }
+        }*/
 
     }
 
@@ -398,14 +398,14 @@ class TpCache_Plugin implements Typecho_Plugin_Interface
      * @throws Typecho_Plugin_Exception
      */
     public static function init_driver(){
-        if (is_null(self::$cache)) {
+        /*if (is_null(self::$cache)) {
             $driver_name = self::$plugin_config->cache_driver;
             $class_name = "typecho_$driver_name";
             $file_path = "driver/$class_name.class.php";
             require_once 'driver/cache.interface.php';
             require_once $file_path;
             self::$cache = call_user_func(array($class_name, 'getInstance'), self::$plugin_config);
-        }
+        }*/
     }
 
 
@@ -439,7 +439,7 @@ class TpCache_Plugin implements Typecho_Plugin_Interface
      */
     public static function delete($path, $del_home = null)
     {
-        $prefixs = array(
+        /*$prefixs = array(
             'http'
             . '://' . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] :
                 ($_SERVER['SERVER_NAME'] . (in_array($_SERVER['SERVER_PORT'], array(80, 443))
@@ -471,6 +471,6 @@ class TpCache_Plugin implements Typecho_Plugin_Interface
                 echo $prefix . '/';
                 @self::$cache->delete(md5($prefix . '/'));
             }
-        }
+        }*/
     }
 }

@@ -95,7 +95,7 @@ class Widget_User extends Typecho_Widget
             //更新最后活动时间
             $this->db->query($this->db
             ->update('table.users')
-            ->rows(array('activated' => $this->options->gmtTime))
+            ->rows(array('activated' => $this->options->time))
             ->where('uid = ?', $this->_user['uid']));
         }
     }
@@ -114,9 +114,9 @@ class Widget_User extends Typecho_Widget
     {
         //插件接口
         $result = $this->pluginHandle()->trigger($loginPluggable)->login($name, $password, $temporarily, $expire);
-        //if ($loginPluggable) {
-        //    return $result;
-        //}
+        if ($loginPluggable) {
+            return $result;
+        }
 
         /** 开始验证用户 **/
         $user = $this->db->fetchRow($this->db->select()
@@ -158,6 +158,7 @@ class Widget_User extends Typecho_Widget
 
             /** 压入数据 */
             $this->push($user);
+            $this->_user = $user;
             $this->_hasLogin = true;
             $this->pluginHandle()->loginSucceed($this, $name, $password, $temporarily, $expire);
 
