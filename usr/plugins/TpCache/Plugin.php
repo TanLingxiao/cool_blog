@@ -170,7 +170,7 @@ class TpCache_Plugin implements Typecho_Plugin_Interface
 
 
         try {
-            $data = false;
+            $data = self::get(self::$path);
             if ($data != false && !isset($_GET["s"])) {
                 $data = unserialize($data);
                 //如果超时
