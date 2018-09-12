@@ -41,6 +41,10 @@ form div[role="main"], form div[role="complementary"]{
   width: 80%;
 }
 
+.fullscreen #tab-files {
+  right: 0px;
+}
+
 pre.prettyprint { display: block;font-family: Menlo,Monaco,Consolas,"Lucida Console","Courier New",monospace !important;}
 /* Pretty printing styles. Used with prettify.js. */
 
