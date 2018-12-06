@@ -329,7 +329,7 @@ class TpCache_Plugin implements Typecho_Plugin_Interface
         //生成永久连接
         $path_info = $routeExists ? Typecho_Router::url($type, $contents) : '#';
 
-        if (self::init($path_info)) self::delete($path_info);
+        if (self::init($path_info))  self::$cache->flush(); //self::delete($path_info);
     }
 
     /**
