@@ -102,7 +102,7 @@ class TeStat_Plugin implements Typecho_Plugin_Interface
             }else{
                 $views = explode(',', $views);
             }
-            if(!in_array($cid,$views)){
+            if(!in_array($cid,$views) && !self::isBot()){  // 过滤爬虫的访问
                 $db = Typecho_Db::get();
                 $db->query($db->update('table.contents')->rows(array('viewsNum' => (int)$archive->viewsNum+1))->where('cid = ?', $cid));
                 if (count($views) > 10) {
@@ -114,6 +114,78 @@ class TeStat_Plugin implements Typecho_Plugin_Interface
             }
         }
     }
+
+    public static function isBot() {
+        $bots = array(
+            'TencentTraveler',
+            'Baiduspider',
+            'BaiduGame',
+            'Googlebot',
+            'msnbot',
+            'Sosospider+',
+            'Sogou web spider',
+            'ia_archiver',
+            'Yahoo! Slurp',
+            'YoudaoBot',
+            'Yahoo Slurp',
+            'MSNBot',
+            'Java (Often spam bot)',
+            'BaiDuSpider',
+            'Voila',
+            'Yandex bot',
+            'BSpider',
+            'twiceler',
+            'Sogou Spider',
+            'Speedy Spider',
+            'Google AdSense',
+            'Heritrix',
+            'Python-urllib',
+            'Alexa (IA Archiver)',
+            'Ask',
+            'Exabot',
+            'Custo',
+            'OutfoxBot/YodaoBot',
+            'yacy',
+            'SurveyBot',
+            'legs',
+            'lwp-trivial',
+            'Nutch',
+            'StackRambler',
+            'The web archive (IA Archiver)',
+            'Perl tool',
+            'MJ12bot',
+            'Netcraft',
+            'MSIECrawler',
+            'WGet tools',
+            'larbin',
+            'Fish search',
+            'crawler',
+            'bingbot',
+            'YisouSpider',
+            'AhrefsBot',
+            'ToutiaoSpider',
+            '360Spider',
+        );
+
+        $request = Typecho_Request::getInstance();
+        $ua = $request->getAgent();
+
+        if (empty($ua)) {
+            return true;
+        }
+
+        $ua = strtolower($ua);
+        foreach ($bots as $val) {
+            $str = strtolower($val);
+            if (strpos($ua, $str) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
 	public static function insertCss($header,$widget){
 		$action = Typecho_Common::url('/action/',Helper::options()->index);
 		echo '<style type="text/css">.testat-dialog{position:fixed;top:100px;left:50%;padding:10px;background-color:#fff;display:none;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;z-index:1024;}
