@@ -1,15 +1,17 @@
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 /**
- * 内容浏览数统计 + 热门文章
+ * 浏览数、喜欢数统计插件
  * 
- * @package TePostViews
- * @author inwao world
- * @version 1.0.0
- * @link https://inwao.com
+ * @package TeStat
+ * @author 绛木子
+ * @version 1.1
+ * @link http://lixianhua.com
  */
-class TePostViews_Plugin implements Typecho_Plugin_Interface
+class TeStat_Plugin implements Typecho_Plugin_Interface
 {
+	public static $info = array();
+	public static $mem = array();
     /**
      * 激活插件方法,如果激活失败,直接抛出异常
      * 
@@ -24,10 +26,18 @@ class TePostViews_Plugin implements Typecho_Plugin_Interface
         // contents 表中若无 viewsNum 字段则添加
         if (!array_key_exists('viewsNum', $db->fetchRow($db->select()->from('table.contents'))))
             $db->query('ALTER TABLE `'. $prefix .'contents` ADD `viewsNum` INT(10) DEFAULT 0;');
+		// contents 表中若无 likesNum 字段则添加
+        if (!array_key_exists('likesNum', $db->fetchRow($db->select()->from('table.contents'))))
+            $db->query('ALTER TABLE `'. $prefix .'contents` ADD `likesNum` INT(10) DEFAULT 0;');
         //增加浏览数
-        Typecho_Plugin::factory('Widget_Archive')->beforeRender = array('TePostViews_Plugin', 'viewCounter');
+        Typecho_Plugin::factory('Widget_Archive')->singleHandle = array('TeStat_Plugin', 'viewCounter');
         //把新增的字段添加到查询中
-        Typecho_Plugin::factory('Widget_Archive')->select = array('TePostViews_Plugin', 'selectHandle');
+        Typecho_Plugin::factory('Widget_Archive')->select = array('TeStat_Plugin', 'selectHandle');
+		//添加动作
+		Helper::addAction('likes', 'TeStat_Action');
+		
+		Typecho_Plugin::factory('Widget_Archive')->header = array('TeStat_Plugin','insertCss');
+		Typecho_Plugin::factory('Widget_Archive')->footer = array('TeStat_Plugin','insertJs');
     }
     
     /**
@@ -40,11 +50,14 @@ class TePostViews_Plugin implements Typecho_Plugin_Interface
      */
     public static function deactivate()
 	{
-        $delFields = Typecho_Widget::widget('Widget_Options')->plugin('TePostViews')->delFields;
+		Helper::removeAction('likes');
+		
+        $delFields = Typecho_Widget::widget('Widget_Options')->plugin('TeStat')->delFields;
         if($delFields){
             $db = Typecho_Db::get();
             $prefix = $db->getPrefix();
             $db->query('ALTER TABLE `'. $prefix .'contents` DROP `viewsNum`;');
+			$db->query('ALTER TABLE `'. $prefix .'contents` DROP `likesNum`;');
         }
 	}
     
@@ -56,25 +69,14 @@ class TePostViews_Plugin implements Typecho_Plugin_Interface
      * @return void
      */
     public static function config(Typecho_Widget_Helper_Form $form)
-	{
+	{	
 		$delFields = new Typecho_Widget_Helper_Form_Element_Radio('delFields', 
             array(0=>_t('保留数据'),1=>_t('删除数据'),), '0', _t('卸载设置'),_t('卸载插件后数据是否保留'));
         $form->addInput($delFields);
 
-        $hotNums = new Typecho_Widget_Helper_Form_Element_Text('hotNums', NULL, '8', _t('热门文章数'),_t(''));
-        $hotNums->input->setAttribute('class', 'mini');
-        $form->addInput($hotNums);
+        $callback_select = new Typecho_Widget_Helper_Form_Element_Text('callback_select', NULL, '.like-num-show', _t('点赞自增选择器'), _t('该项用于点赞成功后数值 +1'));
+        $form->addInput($callback_select);
 
-        $sortBy = new Typecho_Widget_Helper_Form_Element_Radio('sortBy', array(0=>_t('浏览数'),1=>_t('评论数'),), '0', _t('排序依据'),_t(''));
-        $form->addInput($sortBy);
-
-        $minViews = new Typecho_Widget_Helper_Form_Element_Text('minViews', NULL, '0', _t('最低浏览/评论数'),_t('浏览/评论数低于该值时,不显示在热门文章中, 即使热门文章的数量小于热门文章数'));
-        $minViews->input->setAttribute('class', 'mini');
-        $form->addInput($minViews);
-
-        $linkClass = new Typecho_Widget_Helper_Form_Element_Text('linkClass', NULL, '', _t('Link Class'),_t('输出的 a 标签的 Class'));
-        $linkClass->input->setAttribute('class', 'mini');
-        $form->addInput($linkClass);
 	}
     
     /**
@@ -85,7 +87,7 @@ class TePostViews_Plugin implements Typecho_Plugin_Interface
      * @return void
      */
     public static function personalConfig(Typecho_Widget_Helper_Form $form){}
-    
+
     /**
      * 增加浏览量
      * @params Widget_Archive   $archive
@@ -102,17 +104,66 @@ class TePostViews_Plugin implements Typecho_Plugin_Interface
             }
             if(!in_array($cid,$views)){
                 $db = Typecho_Db::get();
-                $row = $db->fetchRow($db->select('viewsNum')->from('table.contents')->where('cid = ?', $cid));
-                $db->query($db->update('table.contents')->rows(array('viewsNum' => (int)$row['viewsNum']+1))->where('cid = ?', $cid));
+                $db->query($db->update('table.contents')->rows(array('viewsNum' => (int)$archive->viewsNum+1))->where('cid = ?', $cid));
                 if (count($views) > 10) {
                     $views = array();
                 }
                 array_push($views, $cid);
                 $views = implode(',', $views);
-                Typecho_Cookie::set('__post_views', $views); //记录查看cookie
+                Typecho_Cookie::set('__post_views', $views, time() + 7200); //记录查看cookie
             }
         }
     }
+	public static function insertCss($header,$widget){
+		$action = Typecho_Common::url('/action/',Helper::options()->index);
+		echo '<style type="text/css">.testat-dialog{position:fixed;top:100px;left:50%;padding:10px;background-color:#fff;display:none;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;z-index:1024;}
+.testat-dialog.error{background-color:#f40;color:#fff;}
+.testat-dialog.success{background-color:#24AA42;color:#fff;}</style><script type="text/javascript">window.action="'.$action.'";</script>';
+	}
+	public static function insertJs($widget){
+
+        $options = Typecho_Widget::widget('Widget_Options')->plugin('TeStat');
+
+        if(!$options->allow_stat)
+        $callback_select = $options->callback_select;
+		$script = <<<EOT
+<script type="text/javascript">
+$(function(){
+	$('.btn-like').click(function(e){
+		e.stopPropagation();
+		e.preventDefault();
+		var that = $(this),num = $(this).data('num'), cid = $(this).data('cid'),numEl = that.find('.post-likes-num');
+		if(cid === undefined) return false;
+		$.get(window.action+'likes?cid='+cid).success(function(rs){
+			if(rs.status === 1){
+				if(numEl.length>0){
+					numEl.text(num+1);
+				}
+				testatAlert(rs.msg===undefined ? '已成功为该文章点赞!' : rs.msg);
+				$('{$callback_select}').text(function() {
+				  return parseInt($(this).text()) + 1;
+				});
+				
+			}else{
+				testatAlert(rs.msg===undefined ? '操作出错!' : rs.msg,'err');
+			}
+		});
+	});
+});
+function testatAlert(msg,type,time){
+	type = type === undefined ? 'success' : 'error';
+	time = time === undefined ? (type === 'success' ? 1500 : 3000) : time;
+	var html = '<div class="testat-dialog '+type+'">'+msg+'</div>';
+	$(html).appendTo($('body')).fadeIn(300,function(){
+		setTimeout(function(){
+			$('body > .testat-dialog').remove();
+		},time);
+	});
+}
+</script>
+EOT;
+		echo $script;
+	}
     //cleanAttribute('fields')清除查询字段，select * 
     public static function selectHandle($archive){
         $user = Typecho_Widget::widget('Widget_User');
@@ -137,39 +188,4 @@ class TePostViews_Plugin implements Typecho_Plugin_Interface
         $select->cleanAttribute('fields');
         return $select;
 	}
-
-
-    public static function outputHotPosts() {
-        $archive = Typecho_Widget::widget('Widget_Archive');
-        $pluginOpts = Typecho_Widget::widget('Widget_Options')->plugin('TePostViews');
-        $sortBy = $pluginOpts->sortBy;
-        $hotNums = $pluginOpts->hotNums;
-        $minViews = $pluginOpts->minViews;
-        $linkClass = $pluginOpts->linkClass;
-        $hotNums = intval($hotNums) <= 0 ? 8 : $hotNums;
-        $minViews = intval($minViews) <= 0 ? 0 : $minViews;
-        $linkClass = strlen($linkClass) > 0 ? 'class="'.$linkClass.'" ' : '';
-        $db = Typecho_Db::get();
-        $select = $db->select()->from('table.contents')
-            ->where('table.contents.type = ?', 'post')
-            ->where('table.contents.status = ?', 'publish')
-            ->limit($hotNums);
-        if ($sortBy) {// 根据评论数排序
-            $select->order("table.contents.commentsNum", Typecho_Db::SORT_DESC);
-            if ($minViews > 0) {
-                $select->where('table.contents.commentsNum >= ?', $minViews);
-            }
-        } else { // 根据浏览数排序
-            $select->order("table.contents.viewsNum", Typecho_Db::SORT_DESC);
-            if ($minViews > 0) {
-                $select->where('table.contents.viewsNum >= ?', $minViews);
-            }
-        }
-
-        $rows = $db->fetchAll($select);
-        foreach ($rows as $row) {
-            $row = $archive->filter($row);
-            echo '<li><a ' . $linkClass . 'href="' . $row['permalink'] . '" title="' . $row['title'] . '">' . $row['title'] . '</a></li>';
-        }
-    }
 }

@@ -122,7 +122,7 @@ class Reward_Plugin implements Typecho_Plugin_Interface {
 
     }
     
-    public static function show_reward() {
+    public static function show_reward($extra_str='') {
         static $words = array(
             "如果对您有用，您的支持将鼓励我继续创作！",
             "赏个馒头吧",
@@ -132,6 +132,7 @@ class Reward_Plugin implements Typecho_Plugin_Interface {
         <div class="support-author">
             <p>{$word}</p>
             <button class="btn btn-success" type="button" data-toggle="modal" data-target="#pay-modal">￥ 打赏</button>
+            $extra_str
         </div>
 HTML;
         echo $html;
