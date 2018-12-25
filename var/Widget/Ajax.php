@@ -41,6 +41,7 @@ class Widget_Ajax extends Widget_Abstract_Options implements Widget_Interface_Do
     {
         $this->user->pass('editor');
         $client = Typecho_Http_Client::get();
+        $result = array('available' => 0);
         if ($client) {
             $client->setHeader('User-Agent', $this->options->generator)
                 ->setTimeout(10)
