@@ -4,10 +4,12 @@
  * 
  * @package Reward
  * @author hongweipeng
- * @version 0.6.1
+ * @version 0.7.0
  * @link https://www.hongweipeng.com
  */
 class Reward_Plugin implements Typecho_Plugin_Interface {
+
+    static $v = '0.7.0';
 
      /**
      * 激活插件方法,如果激活失败,直接抛出异常
@@ -100,7 +102,7 @@ class Reward_Plugin implements Typecho_Plugin_Interface {
         if (!self::is_content()) {
             return;
         }
-        $cssUrl = Helper::options()->pluginUrl . '/Reward/reward.css';
+        $cssUrl = Helper::options()->pluginUrl . '/Reward/reward.css?v=' . self::$v;
         echo '<link rel="stylesheet" type="text/css" href="' . $cssUrl . '" />';
     }
 
@@ -113,9 +115,9 @@ class Reward_Plugin implements Typecho_Plugin_Interface {
             return;
         }
         if (Helper::options()->plugin('Reward')->jq_import) {
-            echo '<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>';
+            echo '<script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>';
         }
-        $jsUrl = Helper::options()->pluginUrl . '/Reward/modal.js';
+        $jsUrl = Helper::options()->pluginUrl . '/Reward/modal.js?v=' . self::$v;
         echo '<script src="'.$jsUrl.'"></script>';
 
 
@@ -148,13 +150,11 @@ HTML;
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+            <h4 class="modal-title">谢谢您的支持</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">谢谢您的支持</h4>
             </div>
             <div class="modal-body">
-                <p>
-                    <img src="{$pay_img}" alt=""/>
-                </p>
+                    <img src="{$pay_img}" alt="" style="border-radius: 0.5rem" />
             </div>
         </div>
     </div>

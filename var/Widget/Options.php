@@ -458,13 +458,40 @@ class Widget_Options extends Typecho_Widget
     public function themeUrl($path = NULL, $theme = NULL)
     {
         if (empty($theme)) {
-            echo Typecho_Common::url($path, $this->themeUrl);
+            echo Typecho_Common::url($path, $this->themeUrl) . '?v=' . $this->currentThemeVersion();
         }
 
         $url = defined('__TYPECHO_THEME_URL__') ? __TYPECHO_THEME_URL__ :
             Typecho_Common::url(__TYPECHO_THEME_DIR__ . '/' . $theme, $this->siteUrl);
 
         return Typecho_Common::url($path, $url);
+    }
+
+    /**
+     * @param null $theme
+     * @return mixed
+     */
+    public function themeInfo($theme = NULL) {
+        if ($theme === NULL) {
+            $theme = $this->theme;
+        }
+
+        $file_path = $this->themeFile($theme) . 'index.php';
+        $info = Typecho_Plugin::parseInfo($file_path);
+        return $info;
+    }
+
+    /**
+     * 返回当前主题的版本
+     * @return string
+     */
+    public function currentThemeVersion() {
+        static $version = NULL;
+        if ($version === NULL) {
+            $info = $this->themeInfo();
+            $version = $info['version'];
+        }
+        return $version;
     }
 
     /**
