@@ -185,7 +185,11 @@ class Links_Plugin implements Typecho_Plugin_Interface
 		/** 自定义数据 */
 		$user = new Typecho_Widget_Helper_Form_Element_Text('user', NULL, NULL, _t('自定义数据'), _t('该项用于用户自定义数据扩展'));
 		$form->addInput($user);
-		
+
+        $is_show = new Typecho_Widget_Helper_Form_Element_Radio('is_show',
+            array('0'=>_t('隐藏'), '1'=>_t('显示'),), '1', _t('是否显示'), _t(''));
+        $form->addInput($is_show);
+
 		/** 链接动作 */
 		$do = new Typecho_Widget_Helper_Form_Element_Hidden('do');
 		$form->addInput($do);
@@ -217,6 +221,7 @@ class Links_Plugin implements Typecho_Plugin_Interface
             $user->value($link['user']);
             $do->value('update');
             $lid->value($link['lid']);
+            $is_show->value($link['is_show']);
             $submit->value(_t('编辑链接'));
             $_action = 'update';
         } else {
@@ -278,7 +283,7 @@ class Links_Plugin implements Typecho_Plugin_Interface
 		if ($sort) {
 			$sql = $sql->where('sort=?', $sort);
 		}
-		$sql = $sql->order($prefix.'links.order', Typecho_Db::SORT_ASC);
+		$sql = $sql->where('is_show=?', '1')->order($prefix.'links.order', Typecho_Db::SORT_ASC);
 		$links_num = intval($links_num);
 		if ($links_num > 0) {
 			$sql = $sql->limit($links_num);

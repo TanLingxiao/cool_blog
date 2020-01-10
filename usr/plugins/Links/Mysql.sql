@@ -7,5 +7,6 @@ CREATE TABLE `typecho_links` (
   `description` varchar(200) default NULL COMMENT 'links描述',
   `user` varchar(200) default NULL COMMENT '自定义',
   `order` int(10) unsigned default '0' COMMENT 'links排序',
+  `is_show` tinyint(1) DEFAULT '1',
   PRIMARY KEY  (`lid`)
 ) ENGINE=MYISAM  DEFAULT CHARSET=%charset%;

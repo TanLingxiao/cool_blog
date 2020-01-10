@@ -41,6 +41,7 @@ include 'menu.php';
 								<col width=""/>
 								<col width="15%"/>
 								<col width="10%"/>
+								<col width="10%"/>
                             </colgroup>
                             <thead>
                                 <tr>
@@ -49,6 +50,7 @@ include 'menu.php';
 									<th><?php _e('链接地址'); ?></th>
 									<th><?php _e('分类'); ?></th>
 									<th><?php _e('图片'); ?></th>
+									<th><?php _e('显示'); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,6 +70,7 @@ include 'menu.php';
 											echo '<img class="avatar" src="'.$nopic_url.'" alt="NOPIC" width="32" height="32"/>';
 										}
 									?></td>
+                                    <td><?php echo $link['is_show'] ? '显示' : '隐藏'; ?></td>
                                 </tr>
                                 <?php endforeach; ?>
                                 <?php else: ?>
