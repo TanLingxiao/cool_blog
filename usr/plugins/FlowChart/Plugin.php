@@ -132,33 +132,35 @@ class FlowChart_Plugin implements Typecho_Plugin_Interface
     <script src="{$raphael_js}"></script>
     <script src="{$flowchart_js}"></script>
     <script>
-        $(function () {
-            var flow_elements = $('code.language-flow,code.lang-flow');
-			for(var i = 0; i < flow_elements.length; i++) {
-				var flow_element = flow_elements[i];
-				var container = document.createElement("div");
-				flow_element.parentNode.parentNode.insertBefore(container,flow_element.parentNode);
-				var code = flow_element.innerText;
-				chart = flowchart.parse(code);
-				flow_element.parentNode.remove();
-				chart.drawSVG(container, {
-                    'x': 0,
-                    'y': 0,
-                    'line-width': 1,
-                    'line-length': 50,
-                    'text-margin': 12,
-                    'font-size': 14,
-                    'font-color': '{$color}',
-                    'line-color': '{$color}',
-                    'element-color': '{$color}',
-                    'fill': '{$fill}',
-                    'yes-text': '{$yesText}',
-                    'no-text': '{$noText}',
-                    'arrow-end': 'block',
-                    'scale': 1,
-                });
-			}
-        });
+        (function($) {
+            $(function () {
+                var flow_elements = $('code.language-flow,code.lang-flow');
+                for(var i = 0; i < flow_elements.length; i++) {
+                    var flow_element = flow_elements[i];
+                    var container = document.createElement("div");
+                    flow_element.parentNode.parentNode.insertBefore(container,flow_element.parentNode);
+                    var code = flow_element.innerText;
+                    chart = flowchart.parse(code);
+                    flow_element.parentNode.remove();
+                    chart.drawSVG(container, {
+                        'x': 0,
+                        'y': 0,
+                        'line-width': 1,
+                        'line-length': 50,
+                        'text-margin': 12,
+                        'font-size': 14,
+                        'font-color': '{$color}',
+                        'line-color': '{$color}',
+                        'element-color': '{$color}',
+                        'fill': '{$fill}',
+                        'yes-text': '{$yesText}',
+                        'no-text': '{$noText}',
+                        'arrow-end': 'block',
+                        'scale': 1,
+                    });
+                }
+            });
+        })(jQuery);
     </script>
 HTML;
     }
