@@ -46,19 +46,19 @@ class FlowChart_Plugin implements Typecho_Plugin_Interface
 
         $lang = new Typecho_Widget_Helper_Form_Element_Radio('lang', array(
             0 => _t('英文'),
-            1 => _t('中文')
+            1 => _t('中文'),
         ), 1, _t('语言'), _t('判断语句显示为Yes, No还是是, 否'));
         $form->addInput($lang->addRule('enum', _t('请选择一种语言'), array(0, 1)));
 
         $reverse = new Typecho_Widget_Helper_Form_Element_Radio('reverse', array(
             0 => _t('否'),
-            1 => _t('是')
+            1 => _t('是'),
         ), 0, _t('反转颜色'), _t('用于暗色主题'));
         $form->addInput($reverse->addRule('enum', _t('请选择一种'), array(0, 1)));
 
         $importJquery = new Typecho_Widget_Helper_Form_Element_Radio('importJquery', array(
             0 => _t('否'),
-            1 => _t('是')
+            1 => _t('是'),
         ), 1, _t('引入jQuery'), _t('本插件需要jQuery, 如果你的网站没有自带jQuery, 请选择"是"'));
         $form->addInput($importJquery->addRule('enum', _t('请选择一个'), array(0, 1)));
 
@@ -134,8 +134,7 @@ class FlowChart_Plugin implements Typecho_Plugin_Interface
     <script>
         $(function () {
             var flow_elements = $('code.language-flow,code.lang-flow');
-			for(var i =0; i<flow_elements.length; i++)
-			{
+			for(var i = 0; i < flow_elements.length; i++) {
 				var flow_element = flow_elements[i];
 				var container = document.createElement("div");
 				flow_element.parentNode.parentNode.insertBefore(container,flow_element.parentNode);
@@ -162,8 +161,6 @@ class FlowChart_Plugin implements Typecho_Plugin_Interface
         });
     </script>
 HTML;
-
     }
-
 
 }
