@@ -29,6 +29,7 @@ class DomainTheme_Plugin implements Typecho_Plugin_Interface
     }
 
     public static function run($archive, $select) {
+        if (!isset($_SERVER['HTTP_HOST']))  return;
     	$db = Typecho_Db::get();
 		$prefix = $db->getPrefix();
         $options = Helper::options();
