@@ -77,19 +77,21 @@ class Typecho_Http_Client_Adapter_Curl extends Typecho_Http_Client_Adapter
                 curl_setopt($ch, CURLOPT_USERAGENT, $this->headers['User-Agent']);
                 unset($this->headers['User-Agent']);
             }
+            $curl_version = curl_version();
+            if (version_compare($curl_version['version'], '7.37.0', '>=')) {
+                $headers = array();
 
-            $headers = array();
+                if (isset($this->headers['Rfc'])) {
+                    $headers[] = $this->headers['Rfc'];
+                    unset($this->headers['Rfc']);
+                }
 
-            if (isset($this->headers['Rfc'])) {
-                $headers[] = $this->headers['Rfc'];
-                unset($this->headers['Rfc']);
+                foreach ($this->headers as $key => $val) {
+                    $headers[] = $key . ': ' . $val;
+                }
+
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             }
-
-            foreach ($this->headers as $key => $val) {
-                $headers[] = $key . ': ' . $val;
-            }
-
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         }
 
         /** POST模式 */
