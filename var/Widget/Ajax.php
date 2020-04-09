@@ -101,7 +101,7 @@ class Widget_Ajax extends Widget_Abstract_Options implements Widget_Interface_Do
                     $data[] = array(
                         'title'  =>  $matches[1][$key],
                         'link'   =>  $matches[2][$key],
-                        'date'   =>  date('n.j', strtotime($matches[3][$key]))
+                        'date'   =>  date('Y.n.j', strtotime($matches[3][$key]))
                     );
 
                     if ($key > 8) {
