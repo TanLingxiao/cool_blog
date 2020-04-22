@@ -1,3 +1,19 @@
-User-agent: *
-Disallow: /admin/
 Sitemap: https://www.hongweipeng.com/sitemap.xml
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: YoudaoBot
+User-agent: Sogou web spider
+User-agent: Sosospider
+Disallow: /admin/
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: ahrefsbot
+Disallow: /
+
+User-agent: *
+Disallow: /
