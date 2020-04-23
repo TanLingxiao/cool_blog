@@ -96,6 +96,21 @@ class AntiSpider_Plugin implements Typecho_Plugin_Interface {
     }
 
     /**
+     * 将字符串转成单字节相加的字符串
+     * input: 'hello'
+     * return: "'h'+'e'+'l'+'l'+'o'"
+     * @param $str
+     */
+    public static function split_add_combine($str) {
+        if (!$str) return "''";
+        $ret = array_map (function ($val) {
+            return "'{$val}'";
+        }, str_split($str));
+
+        return implode('+', $ret);
+    }
+
+    /**
      *为footer添加js文件
      *@return void
      */
@@ -105,14 +120,14 @@ class AntiSpider_Plugin implements Typecho_Plugin_Interface {
         }
         $js = Helper::options()->pluginUrl . '/AntiSpider/crypto-js4.0.0.min.js?v=' . self::$v;
         echo "<script src=\"{$js}\"></script>";
-        $key = static::$key;
-        $iv = static::$iv;
+        $key = static::split_add_combine(static::$key);
+        $iv = static::split_add_combine(static::$iv);
         $js_code =<<<EOF
         <script>
         (function($) {
             let content = $('.article-content');
-            let decode = CryptoJS.AES.decrypt(content.text().trim(), CryptoJS.enc.Utf8.parse('{$key}'), {
-                iv: CryptoJS.enc.Utf8.parse('{$iv}'),
+            let decode = CryptoJS.AES.decrypt(content.text().trim(), CryptoJS.enc.Utf8.parse({$key}), {
+                iv: CryptoJS.enc.Utf8.parse({$iv}),
                 mode: CryptoJS.mode.CBC,
                 padding: CryptoJS.pad.Pkcs7
             }).toString(CryptoJS.enc.Utf8);
