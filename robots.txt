@@ -9,6 +9,12 @@ Disallow: /admin/
 User-agent: Bytespider
 Disallow: /
 
+User-agent: yisouspider
+Disallow: /
+
+User-agent: 360Spider
+Disallow: /
+
 User-agent: MJ12bot
 Disallow: /
 
