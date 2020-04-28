@@ -1,6 +1,7 @@
 Sitemap: https://www.hongweipeng.com/sitemap.xml
 User-agent: Googlebot
 User-agent: Bingbot
+User-agent: Baiduspider
 User-agent: YoudaoBot
 User-agent: Sogou web spider
 User-agent: Sosospider
