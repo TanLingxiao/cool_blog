@@ -1,15 +1,16 @@
 <?php
+if (!defined('__TYPECHO_ROOT_DIR__')) exit(0);
 /**
  * 文章目录树
  * 
  * @package MenuTree
  * @author hongweipeng
- * @version 0.8.0
+ * @version 0.8.1
  * @link https://www.hongweipeng.com
  */
 class MenuTree_Plugin implements Typecho_Plugin_Interface {
 
-    public static $v = '0.8.0';
+    public static $v = '0.8.1';
     
     /**
      * 索引ID
@@ -160,6 +161,7 @@ class MenuTree_Plugin implements Typecho_Plugin_Interface {
         if( $include ) {
             $menuHtml = '<ul>' . $menuHtml . '</ul>';
         }
+        $menuHtml = str_replace("'", '&apos;', $menuHtml);
         return $menuHtml;
     }
 
