@@ -68,7 +68,14 @@ class AntiSpider_Plugin implements Typecho_Plugin_Interface {
         if (!self::is_content()) {
             return $html;
         }
-        $decrypted = openssl_encrypt($html, 'aes-128-cbc', static::$key, 0, static::$iv);
+        $decrypted = preg_replace_callback(
+            '#<p>(.*?)</p>#s',
+            function ($matches) {
+                return '<p class="d-none">' . openssl_encrypt($matches[1], 'aes-128-cbc', static::$key, 0, static::$iv) . '</p>';
+            },
+            $html
+        );
+//        $decrypted = openssl_encrypt($html, 'aes-128-cbc', static::$key, 0, static::$iv);
         return $decrypted;
     }
     /**
@@ -125,14 +132,16 @@ class AntiSpider_Plugin implements Typecho_Plugin_Interface {
         $js_code =<<<EOF
         <script>
         (function($) {
-            let content = $('.article-content');
-            let decode = CryptoJS.AES.decrypt(content.text().trim(), CryptoJS.enc.Utf8.parse({$key}), {
-                iv: CryptoJS.enc.Utf8.parse({$iv}),
-                mode: CryptoJS.mode.CBC,
-                padding: CryptoJS.pad.Pkcs7
-            }).toString(CryptoJS.enc.Utf8);
-            content.html(decode);
-            content.removeClass('d-none')
+            $('.article-content p.d-none').each(function() {
+                let p = $(this);
+                let decode = CryptoJS.AES.decrypt(p.text().trim(), CryptoJS.enc.Utf8.parse({$key}), {
+                    iv: CryptoJS.enc.Utf8.parse({$iv}),
+                    mode: CryptoJS.mode.CBC,
+                    padding: CryptoJS.pad.Pkcs7
+                }).toString(CryptoJS.enc.Utf8);
+                p.html(decode);
+                p.removeClass('d-none');
+            });
         })(jQuery);
         </script>
 EOF;
