@@ -53,8 +53,8 @@ include 'menu.php';
 								<?php foreach ($domaintheme as $link): ?>
                                 <tr id="lid-<?php echo $link['id']; ?>">
                                     <td><input type="checkbox" value="<?php echo $link['id']; ?>" name="id[]"/></td>
-									<td><a href="<?php echo $request->makeUriByRequest(array('id'=>$link['id'], 'themename'=>null)); ?>" title="点击编辑"><?php echo $link['name']; ?></a>
-									<td><a href="http://<?php echo $link['domain']; ?>" target="_blank"><?php echo $link['domain']; ?></a></td>
+                                    <td><a href="<?php echo $request->makeUriByRequest(array('id'=>$link['id'], 'themename'=>null)); ?>" title="点击编辑"><?php echo $link['name']; ?></a></td>
+									<td><a href="http://<?php echo $link['domain']; ?>" target="_blank" rel="noopener"><?php echo $link['domain']; ?></a></td>
 									<td><?php echo $link['theme']; ?></td>
                                 </tr>
                                 <?php endforeach; ?>
