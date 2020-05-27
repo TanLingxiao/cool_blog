@@ -15,10 +15,9 @@ include 'menu.php';
                 </div>
                 <div class="col-mb-12 col-tb-8" role="main">
                     <?php
-                        date_default_timezone_set('PRC');//设置中国时区
                         $user = Typecho_Widget::widget('Widget_User');
                         $page_size = 20;
-                        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                        $page = (int) $request->get('page', 1);
                         $count = $db->fetchRow($db->select('count(1) as total_num')->from('table.talk')->where('authorId = ?', $user->uid));
                         $total = $count['total_num'];
                         $talks = $db->fetchAll($db->select()->from('table.talk')
@@ -68,7 +67,7 @@ include 'menu.php';
                                     <td><?php echo date('Y-m-d<b\r>H:i:s', $talk['created']); ?></td>
 									<td>
                                         <a href="<?php echo $request->makeUriByRequest('id=' . $talk['id']); ?>" title="点击编辑">
-                                        <?php echo Typecho_Common::subStr($talk['content'], 0, 9); ?>
+                                        <?php echo htmlspecialchars(Typecho_Common::subStr($talk['content'], 0, 30), ENT_QUOTES); ?>
                                         </a>
                                     </td>
 									<td><?php echo $talk['isShow'] ? '是' : '否'; ?></td>
@@ -83,11 +82,8 @@ include 'menu.php';
                         </table>
                         <?php
                             //分页
-                            $currUrl = ($request->isSecure() ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
-                            parse_str($_SERVER['QUERY_STRING'], $parseUrl);
-                            unset($parseUrl['page']);
-                            $query = $currUrl.'?'.http_build_query($parseUrl);
-                            $pange_nav = new Typecho_Widget_Helper_PageNavigator_Box($total, $page, $page_size,$query.'&page={page}');
+                            $query = $request->makeUriByRequest('page={page}');
+                            $pange_nav = new Typecho_Widget_Helper_PageNavigator_Box($total, $page, $page_size, $query);
                             echo '<ul class="typecho-pager" style="width:100%;">';
                             $pange_nav->render("上一页", "下一页");
                             echo '</ul>';
