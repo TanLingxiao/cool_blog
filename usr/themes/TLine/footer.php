@@ -1,3 +1,4 @@
+<?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 					<li class="line">
 <div class="tmicon fa-search"></div>
 <div class="box">

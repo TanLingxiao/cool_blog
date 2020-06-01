@@ -1,5 +1,5 @@
 <?php
-
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 function themeConfig($form) {
     $bgImg = new Typecho_Widget_Helper_Form_Element_Text('bgImg', NULL, NULL, _t('首页背景图片地址'), _t('在这里填入一个图片URL地址, 作为首页背景图片, 默认使用images下的rainbow.png'));
     $form->addInput($bgImg);

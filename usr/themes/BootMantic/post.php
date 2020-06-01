@@ -1,5 +1,5 @@
 <?php
-
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
     if (isset($_GET["action"]) && $_GET["action"] == "ajax_comments") {
         $this->need('comments.php');
     } else {

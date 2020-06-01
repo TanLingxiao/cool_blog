@@ -1,4 +1,4 @@
-<!-- SIDEBAR -->
+<?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?><!-- SIDEBAR -->
 <?php //print_r($this); ?>
 <div class="sidebar-menu hidden-xs hidden-sm">
 	<div class="top-section">

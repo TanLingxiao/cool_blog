@@ -1,4 +1,4 @@
-<li class="line">
+<?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?><li class="line">
 <div class="tmicon fa-comments"></div>
 <div class="box">
 <div id="comments">

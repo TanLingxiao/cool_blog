@@ -1,4 +1,4 @@
-<div class="side">
+<?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?><div class="side">
     <?php if (!empty($this->options->sidebarBlock) && in_array('ShowRecentPosts', $this->options->sidebarBlock)): ?>
     <section class="block">
         <p class="ui <?php $this->options->labelColor() ?> ribbon label"><?php _e('最新文章'); ?></p>

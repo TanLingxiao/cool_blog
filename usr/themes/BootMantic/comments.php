@@ -1,4 +1,7 @@
-<?php $this->comments()->to($comments); ?>
+<?php
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+$this->comments()->to($comments);
+?>
 <div id="comments">
 
 <?php if($this->allow('comment')): ?>

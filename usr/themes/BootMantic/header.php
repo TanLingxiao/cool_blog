@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?><!DOCTYPE HTML>
 <!--[if lt IE 9]>
 <html id="ie8" lang="zh-CN">
 <![endif]-->

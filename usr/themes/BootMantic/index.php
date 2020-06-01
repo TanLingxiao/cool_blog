@@ -8,7 +8,7 @@
  * @version 1.0
  * @link http://blog.sloger.info
  */
- 
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
     $this->need('header.php');
 ?>
 
