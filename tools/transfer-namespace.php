@@ -1,5 +1,11 @@
 <?php
 
+/** 参数不存在则退出 */
+if (!isset($argv[1])) {
+    echo 'no args';
+    exit(1);
+}
+
 // transfer namespace based php class to dashed
 $dir = $argv[1];
 $ns = $argv[2];

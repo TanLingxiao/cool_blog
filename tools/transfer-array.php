@@ -1,5 +1,11 @@
 <?php
 
+/** 参数不存在则退出 */
+if (!isset($argv[1])) {
+    echo 'no args';
+    exit(1);
+}
+
 // transfer [] to array()
 
 $file = $argv[1];
