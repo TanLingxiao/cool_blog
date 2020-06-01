@@ -20,7 +20,7 @@ class Markdown
     {
         static $parse;
         if(empty($parse)) {
-            $parse = new Parsedown();
+            $parse = new WParsedown();
         }
         return $parse->text($text);
         /*static $parser;
