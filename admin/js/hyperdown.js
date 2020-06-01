@@ -681,7 +681,7 @@
       if (str.match(/^\s*$/)) {
         return '';
       } else {
-        return '<pre><code' + (!!lang ? " class=\"" + lang + "\"" : '') + (!!rel ? " rel=\"" + rel + "\"" : '') + '>' + (htmlspecialchars(str)) + '</code></pre>';
+        return '<pre><code' + (!!lang ? " class=\"language-" + lang + "\"" : '') + (!!rel ? " rel=\"" + rel + "\"" : '') + '>' + (htmlspecialchars(str)) + '</code></pre>';
       }
     };
 

@@ -59,8 +59,7 @@ class LaTex_Plugin implements Typecho_Plugin_Interface
      * 输出尾部js
      * 
      * @access public
-     * @param unknown $footer
-     * @return unknown
+     * @return void
      */
     public static function footer() {
         $jsUrl = Helper::options()->pluginUrl . '/LaTex/latex.js';
@@ -78,7 +77,7 @@ class LaTex_Plugin implements Typecho_Plugin_Interface
         <script type="text/javascript">
             setInterval(function() {
                 latex.parse("{$mark}");
-            }, 50);
+            }, 500);
         </script>
 HTML;
         echo $html;
