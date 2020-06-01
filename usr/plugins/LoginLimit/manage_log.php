@@ -1,4 +1,5 @@
 <?php
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 include_once 'common.php';
 include_once 'header.php';
 include_once 'menu.php';

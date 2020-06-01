@@ -1,4 +1,5 @@
 <?php
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 /**
  * 友情链接插件（修改部分代码，保留作者信息）
  * 

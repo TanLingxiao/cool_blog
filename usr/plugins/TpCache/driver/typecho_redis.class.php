@@ -1,5 +1,5 @@
 <?php
-
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 class typecho_redis implements TpCache{
 
     private static $_instance = null;

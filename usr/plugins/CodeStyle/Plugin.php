@@ -1,4 +1,5 @@
 <?php
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 /**
  * 代码显示样式风格 可多用户不同风格
  * 

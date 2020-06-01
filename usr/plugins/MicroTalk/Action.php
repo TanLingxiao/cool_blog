@@ -1,4 +1,5 @@
 <?php
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 class MicroTalk_Action extends Typecho_Widget implements Widget_Interface_Do
 {
     public static $redirect_uri = 'extending.php?panel=MicroTalk%2Fmanage-talk.php';
