@@ -8,11 +8,11 @@ include 'menu.php';
  */
 $post = new stdClass();
 $post->isMarkdown = 1;
-$post->cid = (int) $request->get('id', 0);
+$post->cid = $request->get('id', '');;
+$fileParentContent = $post;
 ?>
 <style>
     .dynamic-list-item {
-        font-size: 18px;
         background-color: #fff;
         cursor: pointer;
     }
