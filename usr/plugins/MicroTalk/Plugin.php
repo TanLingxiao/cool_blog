@@ -194,25 +194,16 @@ class MicroTalk_Plugin implements Typecho_Plugin_Interface
 
 }
 
+
 class Typecho_Widget_Helper_Form_Element_Textarea_Editor extends Typecho_Widget_Helper_Form_Element_Textarea
 {
-    /**
-     * 初始化当前输入项
-     *
-     * @access public
-     * @param string $name 表单元素名称
-     * @param array $options 选择项
-     * @return Typecho_Widget_Helper_Layout
-     */
     public function input($name = NULL, array $options = NULL)
     {
+        $input = parent::input($name, $options);
         $options = Typecho_Widget::widget('Widget_Options');
-        $input = new Typecho_Widget_Helper_Layout('textarea', array('id' => 'text', 'name' => $name));
+        $input->setAttribute('id', 'text');
         $input->setAttribute('style', 'height:' . $options->editorSize . 'px');
         $this->label->setAttribute('for', 'text');
-        $this->container($input->setClose(false));
-        $this->inputs[] = $input;
-
         return $input;
     }
 }
