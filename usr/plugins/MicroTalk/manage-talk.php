@@ -3,14 +3,15 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 include 'header.php';
 include 'menu.php';
 
+/**
+ * 模拟写文章页面
+ */
 $post = new stdClass();
 $post->isMarkdown = 1;
 $post->cid = (int) $request->get('id', 0);
 ?>
 <style>
     .dynamic-list-item {
-        /*border-top: 1px #e4dad1 solid; */
-        /*border-bottom: 1px #e4dad1 solid;*/
         font-size: 18px;
         background-color: #fff;
         cursor: pointer;
@@ -80,7 +81,7 @@ $post->cid = (int) $request->get('id', 0);
                     <div class="typecho-table-wrap">
                         <table class="typecho-list-table">
                             <colgroup>
-                                <col width="20"/>
+                                <col width=""/>
                                 <col width=""/>
                             </colgroup>
                             <thead>
@@ -98,7 +99,7 @@ $post->cid = (int) $request->get('id', 0);
                                         <div class="dynamic-list-item" data-id="5">
                                             <div class="title">
                                                 <a href="<?php echo $request->makeUriByRequest('id=' . $talk['id']); ?>" title="点击编辑">
-                                                <?php echo htmlspecialchars(Typecho_Common::subStr($talk['content'], 0, 30), ENT_QUOTES); ?>
+                                                <?php echo htmlspecialchars(Typecho_Common::subStr($talk['content'], 0, 15), ENT_QUOTES); ?>
                                                 </a>
                                             </div>
                                             <div class="subtitle">
