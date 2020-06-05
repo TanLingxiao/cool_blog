@@ -2134,3 +2134,9 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 /* line 44, ../scss/_hidden.scss */
 .invisible {
   visibility: hidden; }
+
+/* cool_blog 所需的样式 */
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}
