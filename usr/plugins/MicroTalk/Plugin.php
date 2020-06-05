@@ -106,7 +106,7 @@ class MicroTalk_Plugin implements Typecho_Plugin_Interface
         $id = new Typecho_Widget_Helper_Form_Element_Hidden('id');
         $form->addInput($id);
 
-        $content =  new Typecho_Widget_Helper_Form_Element_Textarea('content', NULL, NULL, _t('说说内容(支持markdown)'));
+        $content =  new Typecho_Widget_Helper_Form_Element_Textarea_Editor('content', NULL, NULL, _t('<br><br>'));
         $form->addInput($content);
 
         $is_show = new Typecho_Widget_Helper_Form_Element_Radio('isShow',
@@ -192,4 +192,27 @@ class MicroTalk_Plugin implements Typecho_Plugin_Interface
         return $html;
     }
 
+}
+
+class Typecho_Widget_Helper_Form_Element_Textarea_Editor extends Typecho_Widget_Helper_Form_Element_Textarea
+{
+    /**
+     * 初始化当前输入项
+     *
+     * @access public
+     * @param string $name 表单元素名称
+     * @param array $options 选择项
+     * @return Typecho_Widget_Helper_Layout
+     */
+    public function input($name = NULL, array $options = NULL)
+    {
+        $options = Typecho_Widget::widget('Widget_Options');
+        $input = new Typecho_Widget_Helper_Layout('textarea', array('id' => 'text', 'name' => $name));
+        $input->setAttribute('style', 'height:' . $options->editorSize . 'px');
+        $this->label->setAttribute('for', 'text');
+        $this->container($input->setClose(false));
+        $this->inputs[] = $input;
+
+        return $input;
+    }
 }

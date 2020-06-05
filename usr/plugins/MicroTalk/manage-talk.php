@@ -2,8 +2,41 @@
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 include 'header.php';
 include 'menu.php';
-?>
 
+$post = new stdClass();
+$post->isMarkdown = 1;
+$post->cid = (int) $request->get('id', 0);
+?>
+<style>
+    .dynamic-list-item {
+        /*border-top: 1px #e4dad1 solid; */
+        /*border-bottom: 1px #e4dad1 solid;*/
+        font-size: 18px;
+        background-color: #fff;
+        cursor: pointer;
+    }
+    .dynamic-list-item:hover {
+        background-color: #F6F6F3;
+    }
+
+    .dynamic-list-item.active {
+        background-color: rgba(94, 169, 169, 0.17);
+    }
+
+    .dynamic-list-item div.title {
+
+    }
+
+    .dynamic-list-item div.subtitle {
+        font-size: 10px;
+        margin-top: 3px;
+        color: #827C7C;
+    }
+
+    .dynamic-list-item div.subtitle .time {
+        float: right;
+    }
+</style>
 
 <div class="main">
     <div class="body container">
@@ -14,7 +47,7 @@ include 'menu.php';
                         <li class="current"><?php _e('点击名称进入编辑'); ?></li>
                     </ul>
                 </div>
-                <div class="col-mb-12 col-tb-8" role="main">
+                <div class="col-mb-4" role="main">
                     <?php
                         $user = Typecho_Widget::widget('Widget_User');
                         $page_size = 20;
@@ -48,16 +81,12 @@ include 'menu.php';
                         <table class="typecho-list-table">
                             <colgroup>
                                 <col width="20"/>
-								<col width="15%"/>
                                 <col width=""/>
-								<col width="15%"/>
                             </colgroup>
                             <thead>
                                 <tr>
                                     <th> </th>
-									<th><?php _e('时间'); ?></th>
-									<th><?php _e('内容'); ?></th>
-									<th><?php _e('是否显示'); ?></th>
+									<th><?php _e('我的说说'); ?></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -65,13 +94,28 @@ include 'menu.php';
 								<?php foreach ($talks as $talk): ?>
                                 <tr id="lid-<?php echo $talk['id']; ?>">
                                     <td><input type="checkbox" value="<?php echo $talk['id']; ?>" name="id[]"/></td>
-                                    <td><?php echo date('Y-m-d<b\r>H:i:s', $talk['created']); ?></td>
+<!--                                    <td>--><?php //echo date('Y-m-d<b\r>H:i:s', $talk['created']); ?><!--</td>-->
 									<td>
-                                        <a href="<?php echo $request->makeUriByRequest('id=' . $talk['id']); ?>" title="点击编辑">
-                                        <?php echo htmlspecialchars(Typecho_Common::subStr($talk['content'], 0, 30), ENT_QUOTES); ?>
-                                        </a>
+                                        <div class="dynamic-list-item" data-id="5">
+                                            <div class="title">
+                                                <a href="<?php echo $request->makeUriByRequest('id=' . $talk['id']); ?>" title="点击编辑">
+                                                <?php echo htmlspecialchars(Typecho_Common::subStr($talk['content'], 0, 30), ENT_QUOTES); ?>
+                                                </a>
+                                            </div>
+                                            <div class="subtitle">
+                                                <span class="author">hongweipeng</span>
+                                                <span class="time">
+                                                    <span><?php _e($talk['isShow'] ? '' : '[隐藏]'); ?></span>
+                                                    <?php echo date('Y-m-d H:i:s', $talk['created']); ?>
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                        <!--<a href="<?php /*echo $request->makeUriByRequest('id=' . $talk['id']); */?>" title="点击编辑">
+                                        <?php /*echo htmlspecialchars(Typecho_Common::subStr($talk['content'], 0, 30), ENT_QUOTES); */?>
+                                        </a>-->
                                     </td>
-									<td><?php echo $talk['isShow'] ? '是' : '否'; ?></td>
+<!--									<td>--><?php //echo $talk['isShow'] ? '是' : '否'; ?><!--</td>-->
                                 </tr>
                                 <?php endforeach; ?>
                                 <?php else: ?>
@@ -92,8 +136,11 @@ include 'menu.php';
                     </div>
                     </form>
 				</div>
-                <div class="col-mb-12 col-tb-4" role="form">
+                <div class="col-mb-8" role="form">
                     <?php MicroTalk_Plugin::form()->render(); ?>
+                    <div id="tab-files" class="tab-content">
+                        <?php include 'file-upload.php'; ?>
+                    </div>
                 </div>
         </div>
     </div>
@@ -102,11 +149,14 @@ include 'menu.php';
 <?php
 include 'copyright.php';
 include 'common-js.php';
+include 'editor-js.php';
+include 'file-upload-js.php';
 ?>
 
 <script type="text/javascript">
 (function () {
     $(document).ready(function () {
+        $('#tab-files').trigger('init');
         var table = $('.typecho-list-table');
 
         table.tableSelectable({
