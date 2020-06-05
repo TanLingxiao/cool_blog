@@ -94,7 +94,6 @@ $post->cid = (int) $request->get('id', 0);
 								<?php foreach ($talks as $talk): ?>
                                 <tr id="lid-<?php echo $talk['id']; ?>">
                                     <td><input type="checkbox" value="<?php echo $talk['id']; ?>" name="id[]"/></td>
-<!--                                    <td>--><?php //echo date('Y-m-d<b\r>H:i:s', $talk['created']); ?><!--</td>-->
 									<td>
                                         <div class="dynamic-list-item" data-id="5">
                                             <div class="title">
@@ -111,11 +110,7 @@ $post->cid = (int) $request->get('id', 0);
 
                                             </div>
                                         </div>
-                                        <!--<a href="<?php /*echo $request->makeUriByRequest('id=' . $talk['id']); */?>" title="点击编辑">
-                                        <?php /*echo htmlspecialchars(Typecho_Common::subStr($talk['content'], 0, 30), ENT_QUOTES); */?>
-                                        </a>-->
                                     </td>
-<!--									<td>--><?php //echo $talk['isShow'] ? '是' : '否'; ?><!--</td>-->
                                 </tr>
                                 <?php endforeach; ?>
                                 <?php else: ?>
