@@ -27,7 +27,9 @@ if (isset($post) || isset($page)) {
                     </div>
                 </div>
                 <div>
-                    <img src="<?php echo $attachment->attachment->url; ?>" width="30" height="30" alt="" />
+                    <?php if ($attachment->attachment->isImage) : ?>
+                        <img src="<?php echo $attachment->attachment->url; ?>" width="30" height="30" alt="" />
+                    <?php endif; ?>
                 </div>
             </div>
         </li>

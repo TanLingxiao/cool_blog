@@ -113,7 +113,7 @@ $(document).ready(function() {
                 + ' <a class="delete" href="###" title="<?php _e('删除'); ?>"><i class="i-delete"></i></a></div>'
                 + '</div>'
                 + '<div>'
-                + '<img src="' + data.url + '" width="30" height="30" alt="" />'
+                + (data.isImage ? '<img src="' + data.url + '" width="30" height="30" alt="" />' : '' )
                 + '</div>'
             )
             .effect('highlight', 1000);
