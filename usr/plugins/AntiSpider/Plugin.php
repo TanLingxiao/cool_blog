@@ -71,11 +71,11 @@ class AntiSpider_Plugin implements Typecho_Plugin_Interface {
         $decrypted = preg_replace_callback(
             '#<p>(.*?)</p>#s',
             function ($matches) {
-                return '<p class="d-none">' . openssl_encrypt($matches[1], 'aes-128-cbc', static::$key, 0, static::$iv) . '</p>';
+                $encode_text = openssl_encrypt($matches[1], 'aes-128-cbc', static::$key, 0, static::$iv);
+                return "<p><script>document.write(crypto_decode('{$encode_text}'))</script></p>";
             },
             $html
         );
-//        $decrypted = openssl_encrypt($html, 'aes-128-cbc', static::$key, 0, static::$iv);
         return $decrypted;
     }
     /**
@@ -99,6 +99,23 @@ class AntiSpider_Plugin implements Typecho_Plugin_Interface {
         if (!self::is_content()) {
             return;
         }
+        $js = Helper::options()->pluginUrl . '/AntiSpider/crypto-js4.0.0.min.js?v=' . self::$v;
+        echo "<script src=\"{$js}\"></script>";
+        $key = static::split_add_combine(static::$key);
+        $iv = static::split_add_combine(static::$iv);
+        $js_code =<<<EOF
+        <script>
+        function crypto_decode(encode_text) {
+            let decode = CryptoJS.AES.decrypt(encode_text, CryptoJS.enc.Utf8.parse({$key}), {
+                iv: CryptoJS.enc.Utf8.parse({$iv}),
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            }).toString(CryptoJS.enc.Utf8);
+            return decode;
+        }
+        </script>
+EOF;
+        echo $js_code;
 
     }
 
@@ -125,26 +142,5 @@ class AntiSpider_Plugin implements Typecho_Plugin_Interface {
         if (!self::is_content()) {
             return;
         }
-        $js = Helper::options()->pluginUrl . '/AntiSpider/crypto-js4.0.0.min.js?v=' . self::$v;
-        echo "<script src=\"{$js}\"></script>";
-        $key = static::split_add_combine(static::$key);
-        $iv = static::split_add_combine(static::$iv);
-        $js_code =<<<EOF
-        <script>
-        (function($) {
-            $('.article-content p.d-none').each(function() {
-                let p = $(this);
-                let decode = CryptoJS.AES.decrypt(p.text().trim(), CryptoJS.enc.Utf8.parse({$key}), {
-                    iv: CryptoJS.enc.Utf8.parse({$iv}),
-                    mode: CryptoJS.mode.CBC,
-                    padding: CryptoJS.pad.Pkcs7
-                }).toString(CryptoJS.enc.Utf8);
-                p.html(decode);
-                p.removeClass('d-none');
-            });
-        })(jQuery);
-        </script>
-EOF;
-        echo $js_code;
     }
 }
