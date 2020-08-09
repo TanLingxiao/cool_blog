@@ -106,7 +106,7 @@ class AntiSpider_Plugin implements Typecho_Plugin_Interface {
         $js_code =<<<EOF
         <script>
         function crypto_decode(encode_text) {
-            if (!window.navigator.webdriver) {  // 反 webdriver
+            if (window.navigator.webdriver) {  // 反 webdriver
                 return encode_text;
             }
             let decode = CryptoJS.AES.decrypt(encode_text, CryptoJS.enc.Utf8.parse({$key}), {
