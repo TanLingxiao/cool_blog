@@ -93,7 +93,7 @@ class TeConnect_Action extends Typecho_Widget implements Widget_Interface_Do {
 
         $dataStruct = array(
             'screenName'=>  $this->auth['nickname'],
-            'created'   =>  $this->options->gmtTime,
+            'created'   =>  time(), //$this->options->gmtTime,
             'group'     =>  'subscriber'
         );
 
