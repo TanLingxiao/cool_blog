@@ -171,7 +171,7 @@ class TpCache_Plugin implements Typecho_Plugin_Interface
 
         try {
             $data = self::get(self::$path);
-            if ($data != false && !isset($_GET["s"])) {
+            if ($data != false) {
                 $data = unserialize($data);
                 //如果超时
                 if ($data['c_time'] + self::$plugin_config->expire <= time()) {
@@ -329,7 +329,7 @@ class TpCache_Plugin implements Typecho_Plugin_Interface
         //生成永久连接
         $path_info = $routeExists ? Typecho_Router::url($type, $contents) : '#';
 
-        if (self::init($path_info))  self::$cache->flush(); //self::delete($path_info);
+        if (self::init($path_info)) self::delete($path_info);
     }
 
     /**
